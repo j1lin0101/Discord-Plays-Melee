@@ -113,7 +113,7 @@ async def on_message(message):
         active_game = True
         print("Starting Game")
         bot_msg = await message.channel.send("Select Your Team")
-        one_react = await bot_msg.add_reaqction("1️⃣")
+        one_react = await bot_msg.add_reaction("1️⃣")
         two_react = await bot_msg.add_reaction("2️⃣")
 
     if message.content.startswith("$end"):
@@ -266,7 +266,7 @@ def player2Act(message):
 
     if message.content.startswith('$grab'):
         print("grabbing")
-        pressKey('/')
+        pressKey('y')
 
     # SMASH ATTACKS
     if message.content.startswith('$rsmash'):
@@ -279,7 +279,7 @@ def player2Act(message):
 
     if message.content.startswith('$usmash'):
         print("up smash")
-        pressKey('=')
+        pressKey('u')
 
     if message.content.startswith('$dsmash'):
         print("down smash")
