@@ -48,6 +48,14 @@ def keyComboMod(modifier, direction, action):
     keyboard.release(direction)
     keyboard.release(action)
 
+# BUTTON COMBO THAT INCORPORATES AERIALS
+def keyComboAerial(jump, action):
+    pressKey(jump)
+    pressKey(action)
+
+
+
+
 @client.event
 async def on_ready():
     print('{client.user} has connected to Discord!')
@@ -64,7 +72,6 @@ player2 = []
 async def on_message(message):
 
     global active_game
-
     global player1
     global player2
 
@@ -77,37 +84,29 @@ async def on_message(message):
         if message.author.name in player2:
             player2Act(message)
 
+        time.sleep(.16)
+
     if message.content.startswith("$help"):
         await message.channel.send("Smash on it's own is a rather complex game so trying to simplify it into pure text inputs is super difficult but I tried my best :)\n "
                                    "All commands will start with a ```$``` to let Discord know that you're inputting a command.")
         await message.channel.send("**Basic Movement**:\n"
-                                   "```$left``` will make your character run left\n"
-                                   "```$right``` will make your character run right\n"
-                                   "```$crouch``` will make your character hold down (also useful for dropping through platforms)\n"
-                                   "```$jump``` will make your character jump (note that your double jump will not come if you input a single message saying ```$jump $jump```. Inputs are one per messsage)")
+                                   "```$left```will make your character run left\n"
+                                   "```$right```will make your character run right\n"
+                                   "```$crouch```will make your character hold down (also useful for dropping through platforms)\n"
+                                   "```$jump```will make your character jump (note that your double jump will not come if you input a single message saying ```$jump $jump```. Inputs are one per messsage)")
         await message.channel.send("**Attacks**\n"
-                                   "All attacks are done by writing the direction letter (i.e. l for left, r for right, u for up, d for down) in combination with the action\n"
-                                   "```$jab``` since jab does not take a direction just typing the command as is will make your character jab\n"
-                                   "*Smash Attacks*\n"
-                                   "Smash Attacks are hard hitting kill moves. Type the directional letter and smash to perform the action\n"
-                                   "```$lsmash``` will perform a side smash to the left\n"
-                                   "```$rsmash``` will perform a side smash to the right\n"
-                                   "```$usmash``` will perform an upward smash attack\n"
-                                   "```$dsmash``` will perform a downward smash attack\n"
-                                   "*Tilts*\n"
-                                   "Tilts are physical attacks like smash attacks. However they sometimes lack the instant kill power in exchange for speed and combo potential\n"
-                                   "```$ltilt``` will perform a side tilt to the left\n"
-                                   "```$rtilt``` will perform a side tilt to the right\n"
-                                   "```$utilt``` will perform an upward tilt attack\n"
-                                   "```$dtilt``` will perform a downward tilt attack")
-        await message.channel.send("**Special Attacks**\n"
-                                   "Your specials are what make your character unique. They can be projectiles, strong hits, or super situational moves like a reflector (unless you actually know how to play spacies in this game)\n"
-                                   "Simply typing the directional letter and b will perform that special\n"
-                                   "```$lb``` will perform a side special to the left\n"
-                                   "```$rb``` will perform a side special to the right\n"
-                                   "```$ub``` will perform an up special. Note that Up Special is normally your recovery move. Pay special attention when to type this in as quickly as you can when you're offstage\n"
-                                   "```$dtilt``` will perform a downward special")
-        await message.channel.send("If you have any more questions feel free to ask @boi_jiro\n")
+                                   "```$jab``` will make your character jab \n"
+                                   "```$b``` will make your character do their neutral (no direction) special move\n"
+                                   "```$nair``` will make your character do a neutral (no directional focus) aerial attack\n"
+                                   "***Directional Attacks***\n"
+                                   "All attacks (smash attacks, tilts, aerials, and specials) are done by writing the direction letter (i.e. l for left, r for right, u for up, d for down) in combination with the action (smash, tilt, b,)\n"
+                                   "***Examples***\n"
+                                   "```$lsmash```A Smash Attack to the left\n"
+                                   "```$dtilt```A Downward Tilt Attack\n"
+                                   "```$rair``` An Aerial toward the Right side\n"
+                                   "```$ub```An Upward Special")
+        await message.channel.send("If you have anymore questions please feel free to DM @boi_jiro with questions")
+
 
     if message.content.startswith("$start"):
         active_game = True
@@ -121,6 +120,7 @@ async def on_message(message):
         print("Ending Game")
         player1 = []
         player2 = []
+
 
 @client.event
 async def on_reaction_add(reaction, user):
@@ -151,180 +151,266 @@ async def on_reaction_add(reaction, user):
 
 def player1Act(message):
 
+    # Configure GC Controller Buttons to Keyboard Keys
+    up = 'e'
+    down = 'd'
+    left = 's'
+    right = 'f'
+    taunt = Key.tab
+    c_up = Key.shift_l
+    c_down = Key.cmd_l
+    c_left = Key.ctrl_l
+    c_right = Key.alt_l
+    l = 'q'
+    r = 'w'
+    z = 'g'
+    a = 'z'
+    b = 'x'
+    x = 'c'
+    y = 'v'
+    mod = 'r'
+    start = Key.space
+
     print("Player 1: ", end=" ")
 
     # MOVEMENT
     if message.content.startswith('$left'):
         print("going left")
-        pressKey('q')
+        pressKey(left)
 
     if message.content.startswith('$right'):
         print("going right")
-        pressKey('d')
+        pressKey(right)
 
     if message.content.startswith('$jump'):
         print("jumping")
-        pressKey('w')
+        pressKey(y)
 
     if message.content.startswith('$crouch'):
         print("crouching")
-        pressKey('s')
+        pressKey(down)
+
+    if message.content.startswith('$taunt'):
+        print("taunting")
+        pressKey(taunt)
 
     # TRIGGERS
     if message.content.startswith('$shield'):
         print("shielding")
-        pressKey('z')
+        pressKey(l)
 
     if message.content.startswith('$grab'):
         print("grabbing")
-        pressKey('e')
+        pressKey(z)
 
     # SMASH ATTACKS
     if message.content.startswith('$rsmash'):
         print("right smash")
-        pressKey('v')
+        pressKey(c_right)
 
     if message.content.startswith('$lsmash'):
         print("left smash")
-        pressKey('c')
+        pressKey(c_left)
 
     if message.content.startswith('$usmash'):
         print("up smash")
-        pressKey('r')
+        pressKey(c_up)
 
     if message.content.startswith('$dsmash'):
         print("down smash")
-        pressKey('f')
+        pressKey(c_down)
 
     # TILTS AND JAB
     if message.content.startswith('$jab'):
         print("jabbing")
-        pressKey('b')
+        pressKey(a)
 
+    #Mod, Direction, Action
     if message.content.startswith('$ltilt'):
         print("left tilt")
-        keyComboMod('g', 'q', 'b')
+        keyComboMod(mod, left, a)
 
     if message.content.startswith('$rtilt'):
         print("right tilt")
-        keyComboMod('g', 'd', 'b')
+        keyComboMod(mod, right, a)
 
     if message.content.startswith('$utilt'):
         print("up tilt")
-        keyComboMod('g', 'w', 'b')
+        keyComboMod(mod, up, a)
 
     if message.content.startswith('$dtilt'):
         print("down tilt")
-        keyComboMod('g', 's', 'b')
+        keyComboMod(mod, down, a)
 
     # SPECIALS
+    # Action, Direction
     if message.content.startswith('$b'):
         print("netural b")
-        pressKey('x')
+        pressKey(b)
 
     if message.content.startswith('$lb'):
         print("left b")
-        keyCombo('x', 'q')
+        keyCombo(b, left)
 
     if message.content.startswith('$rb'):
         print("right b")
-        keyCombo('x', 'd')
+        keyCombo(b, right)
 
     if message.content.startswith('$db'):
         print("down b")
-        keyCombo('x', 's')
+        keyCombo(b, down)
 
     if message.content.startswith('$ub'):
         print("up b")
-        keyCombo('x', 'w')
+        keyCombo(b, up)
+
+    # AERIALS
+    if message.content.startswith('$nair'):
+        print("neutral air")
+        keyComboAerial(y, a)
+
+    if message.content.startswith('$rair'):
+        print("right air")
+        keyComboAerial(y, c_right)
+
+    if message.content.startswith('$lair'):
+        print("left air")
+        keyComboAerial(y, c_left)
+
+    if message.content.startswith('$dair'):
+        print("down air")
+        keyComboAerial(y, c_down)
 
 def player2Act(message):
+    # Configure GC Controller Buttons to Keyboard Keys
+    up = 'u'
+    down = 'j'
+    left = 'h'
+    right = 'k'
+    taunt = Key.enter
+    c_up = 'p'
+    c_down = ';'
+    c_left = 'l'
+    c_right = "'"
+    l = 'i'
+    r = 'o'
+    z = ','
+    a = 'n'
+    b = 'm'
+    x = '['
+    y = ']'
+    mod = 'y'
+    start = '.'
 
     print("Player 2: ", end=" ")
 
     # MOVEMENT
     if message.content.startswith('$left'):
         print("going left")
-        pressKey('j')
+        pressKey(left)
 
     if message.content.startswith('$right'):
         print("going right")
-        pressKey('l')
+        pressKey(right)
 
     if message.content.startswith('$jump'):
         print("jumping")
-        pressKey('i')
+        pressKey(y)
 
     if message.content.startswith('$crouch'):
         print("crouching")
-        pressKey('k')
+        pressKey(down)
+
+    if message.content.startswith('$taunt'):
+        print("taunting")
+        pressKey(taunt)
 
     # TRIGGERS
     if message.content.startswith('$shield'):
         print("shielding")
-        pressKey('o')
+        pressKey(l)
 
     if message.content.startswith('$grab'):
         print("grabbing")
-        pressKey('y')
+        pressKey(z)
 
     # SMASH ATTACKS
     if message.content.startswith('$rsmash'):
         print("right smash")
-        pressKey('-')
+        pressKey(c_right)
 
     if message.content.startswith('$lsmash'):
         print("left smash")
-        pressKey('[')
+        pressKey(c_left)
 
     if message.content.startswith('$usmash'):
         print("up smash")
-        pressKey('u')
+        pressKey(c_up)
 
     if message.content.startswith('$dsmash'):
         print("down smash")
-        pressKey(']')
+        pressKey(c_down)
 
     # TILTS AND JAB
     if message.content.startswith('$jab'):
         print("jabbing")
-        pressKey('n')
+        pressKey(a)
 
+    # Mod, Direction, Action
     if message.content.startswith('$ltilt'):
         print("left tilt")
-        keyComboMod('h', 'j', 'n')
+        keyComboMod(mod, left, a)
 
     if message.content.startswith('$rtilt'):
         print("right tilt")
-        keyComboMod('h', 'l', 'n')
+        keyComboMod(mod, right, a)
 
     if message.content.startswith('$utilt'):
         print("up tilt")
-        keyComboMod('h', 'i', 'n')
+        keyComboMod(mod, up, a)
 
     if message.content.startswith('$dtilt'):
         print("down tilt")
-        keyComboMod('h', 'k', 'n')
+        keyComboMod(mod, down, a)
 
     # SPECIALS
+    # Action, Direction
     if message.content.startswith('$b'):
         print("netural b")
-        pressKey('m')
+        pressKey(b)
 
     if message.content.startswith('$lb'):
         print("left b")
-        keyCombo('m', 'j')
+        keyCombo(b, left)
 
     if message.content.startswith('$rb'):
         print("right b")
-        keyCombo('m', 'l')
+        keyCombo(b, right)
 
     if message.content.startswith('$db'):
         print("down b")
-        keyCombo('m', 'k')
+        keyCombo(b, down)
 
     if message.content.startswith('$ub'):
         print("up b")
-        keyCombo('m', 'i')
+        keyCombo(b, up)
+
+    # AERIALS
+    if message.content.startswith('$nair'):
+        print("neutral air")
+        keyComboAerial(y, a)
+
+    if message.content.startswith('$rair'):
+        print("right air")
+        keyComboAerial(y, c_right)
+
+    if message.content.startswith('$lair'):
+        print("left air")
+        keyComboAerial(y, c_left)
+
+    if message.content.startswith('$dair'):
+        print("down air")
+        keyComboAerial(y, c_down)
+
 
 client.run(TOKEN)
