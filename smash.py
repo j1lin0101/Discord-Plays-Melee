@@ -16,7 +16,7 @@ from pynput.keyboard import Key, Controller
 keyboard = Controller()
 
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+TOKEN = os.getenv('SMASH_TOKEN')
 
 client = discord.Client()
 
